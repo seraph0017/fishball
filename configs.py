@@ -5,6 +5,7 @@ from os import path
 
 STATIC_FILES_PATH = path.join(path.abspath('.'),"app","statics")
 TEMPLATE_FILES_PATH = path.join(path.abspath('.'),"app","templates") 
+UPLOADS_FILES_PATH = ""
 
 
 

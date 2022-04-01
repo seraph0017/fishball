@@ -1,0 +1,40 @@
+{% extends "_base.jinja2" %}
+
+
+{% block content_body %}
+ <div class="bg-white px-4 py-5 p-md-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Gallery Box Style</li>
+        </ol>
+    </nav>
+
+    <div class="portfolio-grid-wrapper">
+        <div class="megafolio-container noborder norounded">         
+            <!-- Item 1 -->
+            {% for url in url_list %}
+            <div class="mega-entry cat-all cat-one cat-four" id="entry-1" data-src="/upload/{{url}}" data-width="504" data-height="400">
+                <div class="mega-hover alone">
+                    <div class="mega-hovertitle">
+                        Risus ac pellentesque
+                        <div class="mega-hoversubtitle">Posuere rhoncus</div>
+                    </div>
+                                
+                    <a data-fancybox="portfolio-gallery" data-caption="Mauris pulvinar metus" href="https://via.placeholder.com/900x600.png/e5e8e8?text=Grid+Item">
+                        <div class="mega-hoverview mega-zoom"></div>
+                    </a>                    
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <div class="text-center mt-5 mb-1">
+        <button type="button" class="btn btn-lg btn-primary btn-addmore">Load more projects</button>
+    </div>
+
+</div>
+{% endblock %}

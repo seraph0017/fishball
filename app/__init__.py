@@ -4,6 +4,7 @@ import configs
 
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
+from starlette.responses import RedirectResponse
 
 from app.routers import photo
 
@@ -17,9 +18,12 @@ app.include_router(photo.photo_router)
 app.mount("/statics", StaticFiles(directory=configs.STATIC_FILES_PATH),name="static")
 app.mount("/photos/statics", StaticFiles(directory=configs.STATIC_FILES_PATH),name="static")
 
+app.mount("/upload", StaticFiles(directory=configs.UPLOADS_FILES_PATH),name="upload")
+print(configs.UPLOADS_FILES_PATH)
+
 
 @app.get("/")
 def index_handle(request: Request):
-    return templates.TemplateResponse("_base.html", {"request":request})
+    return RedirectResponse(url=app.url_path_for('photo_index'))
 
 

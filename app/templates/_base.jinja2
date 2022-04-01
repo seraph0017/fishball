@@ -139,7 +139,8 @@
     <div class="content content-box">
 
         <div class="container">
-
+            
+            {% block content_header %}
             <!-- Gallery filter -->
             <div class="portfolio-filter-wrapper bg-dark px-4 px-md-5">
                 <div class="row align-items-center">
@@ -163,6 +164,8 @@
                 </div>
             </div>
 
+            {% endblock %}
+            {% block content_body %}
             <!-- Gallery grid items -->
             <div class="bg-white px-4 py-5 p-md-5">
 
@@ -178,7 +181,7 @@
                     <div class="megafolio-container noborder norounded">
                         
                         <!-- Item 1 -->
-                        <div class="mega-entry cat-all cat-one cat-four" id="entry-1" data-src="https://via.placeholder.com/900x600.png/e5e8e8?text=Grid+Item" data-width="504" data-height="400">
+                        <div class="mega-entry cat-all cat-one cat-four" id="entry-1" data-src="/upload/WechatIMG3589.jpeg" data-width="504" data-height="400">
                             <div class="mega-hover alone">
                             
                                 <div class="mega-hovertitle">
@@ -194,7 +197,7 @@
                         </div>
                         
                         <!-- Item 2 -->
-                        <div class="mega-entry cat-all cat-two cat-one" id="entry-2" data-src="https://via.placeholder.com/900x600.png/e5e8e8?text=Grid+Item" data-width="504" data-height="400">
+                        <div class="mega-entry cat-all cat-two cat-one" id="entry-2" data-src="/upload/WechatIMG3590.jpeg" data-width="504" data-height="400">
                             <div class="mega-hover alone">
                             
                                 <div class="mega-hovertitle">
@@ -210,7 +213,7 @@
                         </div>
                         
                         <!-- Item 3 -->
-                        <div class="mega-entry cat-all cat-three cat-two" id="entry-3" data-src="https://via.placeholder.com/900x600.png/e5e8e8?text=Grid+Item" data-width="504" data-height="400">
+                        <div class="mega-entry cat-all cat-three cat-two" id="entry-3" data-src="/upload/WechatIMG3591.jpeg" data-width="504" data-height="400">
                             <div class="mega-hover alone">
                             
                                 <div class="mega-hovertitle">
@@ -226,7 +229,7 @@
                         </div>
                         
                         <!-- Item 4 -->
-                        <div class="mega-entry cat-all cat-four cat-three" id="entry-4" data-src="https://via.placeholder.com/900x600.png/e5e8e8?text=Grid+Item" data-width="504" data-height="400">
+                        <div class="mega-entry cat-all cat-four cat-three" id="entry-4" data-src="/upload/WechatIMG3592.jpeg" data-width="504" data-height="400">
                             <div class="mega-hover alone">
                             
                                 <div class="mega-hovertitle">
@@ -242,7 +245,7 @@
                         </div>
                         
                         <!-- Item 5 -->
-                        <div class="mega-entry cat-all cat-one cat-four" id="entry-5" data-src="https://via.placeholder.com/900x600.png/e5e8e8?text=Grid+Item" data-width="504" data-height="400">
+                        <div class="mega-entry cat-all cat-one cat-four" id="entry-5" data-src="/upload/WechatIMG3593.jpeg" data-width="504" data-height="400">
                             <div class="mega-hover alone">
                             
                                 <div class="mega-hovertitle">
@@ -258,7 +261,7 @@
                         </div>
                         
                         <!-- Item 6 -->
-                        <div class="mega-entry cat-all cat-two cat-three" id="entry-6" data-src="https://via.placeholder.com/900x600.png/e5e8e8?text=Grid+Item" data-width="504" data-height="400">
+                        <div class="mega-entry cat-all cat-two cat-three" id="entry-6" data-src="/upload/WechatIMG3594.jpeg"  data-width="504" data-height="400">
                             <div class="mega-hover alone">
                             
                                 <div class="mega-hovertitle">
@@ -274,7 +277,7 @@
                         </div>
                         
                         <!-- Item 7 -->
-                        <div class="mega-entry cat-all cat-three cat-two" id="entry-7" data-src="https://via.placeholder.com/900x600.png/e5e8e8?text=Grid+Item" data-width="504" data-height="400">
+                        <div class="mega-entry cat-all cat-three cat-two" id="entry-7" data-src="/upload/WechatIMG3595.jpeg" data-width="504" data-height="400">
                             <div class="mega-hover alone">
                             
                                 <div class="mega-hovertitle">
@@ -290,7 +293,7 @@
                         </div>
                         
                         <!-- Item 8 -->
-                        <div class="mega-entry cat-all cat-four cat-one" id="entry-8" data-src="https://via.placeholder.com/900x600.png/e5e8e8?text=Grid+Item" data-width="504" data-height="400">
+                        <div class="mega-entry cat-all cat-four cat-one" id="entry-8" data-src="/upload/WechatIMG3596.jpeg" data-width="504" data-height="400">
                             <div class="mega-hover alone">
                             
                                 <div class="mega-hovertitle">
@@ -306,7 +309,7 @@
                         </div>
                         
                         <!-- Item 9 -->
-                        <div class="mega-entry cat-all cat-one cat-four" id="entry-9" data-src="https://via.placeholder.com/900x600.png/e5e8e8?text=Grid+Item" data-width="504" data-height="400">
+                        <div class="mega-entry cat-all cat-one cat-four" id="entry-9" data-src="/upload/WechatIMG3597.jpeg" data-width="504" data-height="400">
                             <div class="mega-hover alone">
                             
                                 <div class="mega-hovertitle">
@@ -322,7 +325,7 @@
                         </div>
                         
                         <!-- Item 10 -->
-                        <div class="mega-entry cat-all cat-two cat-one" id="entry-10" data-src="https://via.placeholder.com/900x600.png/e5e8e8?text=Grid+Item" data-width="504" data-height="400">
+                        <div class="mega-entry cat-all cat-two cat-one" id="entry-10" data-src="/upload/WechatIMG3598.jpeg" data-width="504" data-height="400">
                             <div class="mega-hover alone">
                             
                                 <div class="mega-hovertitle">
@@ -410,10 +413,10 @@
 
             </div>
 
+            {% endblock %}
         </div>
 
     </div>
-
     <!-- Footer -->
     <div class="footer">
 

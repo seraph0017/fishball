@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<data>
-	
-    <li class= "playlistItem" data-type='local' data-mp3Path="assets/media/audio/1/Nobody_-_You_are_the_one.mp3"        data-oggPath="assets/media/audio/1/Nobody_-_You_are_the_one.ogg"><a class="playlistNonSelected" href='#'>Nobody - You are the one</a></li>
-    <li class= "playlistItem" data-type='local' data-mp3Path="assets/media/audio/1/Nobody_-_Peaceful_day.mp3"           data-oggPath="assets/media/audio/1/Nobody_-_Peaceful_day.ogg"><a class="playlistNonSelected" href='#'>Nobody - Peaceful day</a></li>
-    <li class= "playlistItem" data-type='local' data-mp3Path="assets/media/audio/1/Nobody_-_Here_comes_success.mp3"     data-oggPath="assets/media/audio/1/Nobody_-_Here_comes_success.ogg"><a class="playlistNonSelected" href='#'>Nobody - Here comes success</a></li>
-	
-</data>

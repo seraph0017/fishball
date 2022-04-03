@@ -23,6 +23,6 @@ app.mount("/upload", StaticFiles(directory=configs.UPLOADS_FILES_PATH), name="up
 app.add_middleware(DBSessionMiddleware, db_url=configs.DATABASE_URI)
 
 
-@app.get("/")
+@app.get("/", name="index_handle")
 def index_handle(request: Request):
     return RedirectResponse(url=app.url_path_for("photo_index"))

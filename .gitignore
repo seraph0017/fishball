@@ -125,3 +125,5 @@ local_configs.py
 uploads/*
 .vscode/*
 log/*
+.DS_Store
+app/.DS_Store

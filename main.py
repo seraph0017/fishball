@@ -3,6 +3,10 @@
 
 
 from app import app
+from app.logger import logger as l
+
+
+l.info("server start")
 
 
 

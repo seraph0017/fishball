@@ -1,8 +1,21 @@
 #!/usr/bin/env python
 # encoding:utf-8
 
+from typing import List
+
 from app.misc.public import templates
 from fastapi import APIRouter, Request
+from fastapi_sqlalchemy import db
+
+from app.sqls.photo import Photo
+from app.schmas.photo import PhotoCreateSchema
+
+from app.service.photo import upload_photo
+
+
+from devtools import debug
+from app.logger import logger as l
+
 
 photo_router = APIRouter(prefix="/photos", tags=["photos"])
 
@@ -32,5 +45,7 @@ def photo_index_handle(request: Request):
 
 
 @photo_router.post("/", name="photo_add")
-def photo_add_handle(request: Request):
-    return 
+async def photo_add_handle(request: Request, photo: PhotoCreateSchema):
+    debug(photo)
+    l.debug(photo)
+    return upload_photo(db, photo)

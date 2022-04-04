@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # encoding:utf-8
 
+import configs
+from os import path
 from typing import List
 
 from app.misc.public import templates
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, UploadFile
 from fastapi_sqlalchemy import db
 
 from app.sqls.photo import Photo
@@ -38,14 +40,26 @@ def photo_index_handle(request: Request):
     re_context = dict(
         request=request,
         url_list=tp_url_list,
-        title="徐嘉泽",
+        title="鱼丸札记",
         project_name="鱼丸札记",
     )
     return templates.TemplateResponse("photo/photo_base.jinja2", re_context)
 
 
 @photo_router.post("/", name="photo_add")
-async def photo_add_handle(request: Request, photo: PhotoCreateSchema):
+async def photo_add_handle(request: Request, mediafiles: List[UploadFile]):
+    for mediafile in mediafiles:
+        l.debug(mediafile.filename)
+        contents = await mediafile.read()
+        with open(path.join(configs.UPLOADS_FILES_PATH, mediafile.filename), 'wb+') as f:
+            f.write(contents)
+    return {'filenames': [file.filename for file in mediafiles]}
+
+
+
+
+@photo_router.put("/", name="photo_msg_edit")
+async def photo_msg_edit_handle(request: Request, photo: PhotoCreateSchema):
     debug(photo)
     l.debug(photo)
     return upload_photo(db, photo)

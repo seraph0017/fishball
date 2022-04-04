@@ -47,7 +47,10 @@
                             </svg>
                             <strong>鱼丸札记</strong>
                         </a>
-                        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#uploadmodal">
+                        <button class="btn btn-primary"
+                                type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#uploadmodal">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  width="16"
                                  height="16"
@@ -129,24 +132,24 @@
                 </div>
             </footer>
             <div class="modal" tabindex="-1" id="uploadmodal">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Modal title</h5>
+                            <h5 class="modal-title">照片上传</h5>
                             <button type="button"
                                     class="btn-close"
                                     data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p>
-                                Modal body text goes here.
-                            </p>
-                            <input id="input-id" type="file" class="file" data-preview-file-type="text" />
+                            <input id="photoupload"
+                                   type="file"
+                                   name="mediafiles"
+                                   data-preview-file-type="text"
+                                   multiple="multiple"/>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
                         </div>
                     </div>
                 </div>
@@ -163,5 +166,18 @@
         <!-- add js -->
         {% block js_plus %}
         {% endblock js_plus %}
+        <script type='text/javascript'>
+        $(document).ready(function () {
+            $.fn.fileinputBsVersion = "3.3.7"; // if not set, this will be auto-derived
+            // with plugin options
+            $("#photoupload").fileinput({
+                language: "zh",
+                previewFileType: "any",
+                'uploadUrl': "{{ url_for('photo_add')}}",
+                 uploadAsync: true,
+                 hideThumbnailContent: true,
+            });
+        });
+        </script>
     </body>
 </html>

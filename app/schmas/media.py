@@ -16,3 +16,9 @@ class PhotoCreateSchema(ItemBase):
     description: Optional[str] = None
     upload_user_id: int
     upload_file: str
+
+
+
+class PhotoUploadSchema(ItemBase):
+
+    user_id: int

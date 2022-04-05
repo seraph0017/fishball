@@ -6,7 +6,7 @@ import configs
 from fabric import Connection, task
 
 from app.sqls import engine, Base
-from app.sqls.photo import Photo
+from app.sqls.media import Medias
 
 c = Connection(configs.DEPLOY_ENV_URI)
 

@@ -12,16 +12,21 @@ from . import Base
 column_default_text = "这个人很懒，什么都没有写"
 
 
-class Photo(Base):
+class Medias(Base):
 
-    __tablename__ = "photos"
+    __tablename__ = "medias"
 
     pic_time = Column(DateTime, default=datetime.datetime.now)
     title = Column(String, default=column_default_text)
     description = Column(Text, default=column_default_text)
+    upload_local_file_path = Column(String)
+    upload_oss_file_path = Column(String)
+    upload_cdn_file_path = Column(String)
+    upload_render_file_path = Column(String)
     upload_user_id = Column(Integer)
     pic_year = Column(Integer)
     pic_month = Column(Integer)
+    is_pic = Column(Boolean)
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     update_time = Column(DateTime, onupdate=datetime.datetime.now, default=datetime.datetime.now)

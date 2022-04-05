@@ -1,0 +1,165 @@
+{% extends "_base.jinja2" %}
+{% block css_plus %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/photo.css')}}"/>
+    <link rel="stylesheet"
+          href="{{ url_for('static', path='/fileinput/css/fileinput.min.css')}}"/>
+{% endblock css_plus %}
+{% block content %}
+    <header>
+        <div class="navbar navbar-dark bg-dark shadow-sm">
+            <div class="container">
+                <a href="#" class="navbar-brand d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="20"
+                         height="20"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-linecap="round"
+                         stroke-linejoin="round"
+                         stroke-width="2"
+                         aria-hidden="true"
+                         class="me-2"
+                         viewBox="0 0 24 24">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                        <circle cx="12" cy="13" r="4"/>
+                    </svg>
+                    <strong>鱼丸札记</strong>
+                </a>
+                <button class="btn btn-primary"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#uploadmodal">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="16"
+                         height="16"
+                         fill="currentColor"
+                         class="bi bi-cloud-upload"
+                         viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/>
+                        <path fill-rule="evenodd"
+                              d="M7.646 4.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V14.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                    </svg>
+                    上传
+                </button>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="py-5 text-center container">
+            <div class="row py-lg-5">
+                <div class="col-lg-6 col-md-8 mx-auto">
+                    <h1 class="fw-light">鱼丸の日常</h1>
+                    <hr/>
+                    <p class="lead text-muted">
+                        吾年三十五，汝生方两年。
+                    </p>
+                    <p class="lead text-muted">
+                        虽知得子晚，亦拟寿家传。
+                    </p>
+                    <p class="lead text-muted">
+                        立己要庄重，存心无躁偏。
+                    </p>
+                    <p class="lead text-muted">
+                        人皆可向上，从否勿归天。
+                    </p>
+                </div>
+            </div>
+        </section>
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    {% for media in medias %}
+                        <div class="col">
+                            <div class="card shadow-sm">
+                                {% if media.is_pic %}
+                                    <img src="/upload/{{ media.upload_render_file_path }}"
+                                         alt="..."
+                                         height=""
+                                         width=""/>
+                                {% else %}
+                                    <video src="/upload/{{ media.upload_render_file_path }}" controls="controls">
+                                    </video>
+                                {% endif %}
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                        </div>
+                                        <small class="text-muted">9 mins</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="text-muted py-5">
+        <div class="container">
+            <p class="float-end mb-1">
+                <a href="#">Back to top</a>
+            </p>
+            <p class="mb-1">
+                Album example is copy; Bootstrap, but please download and customize it for yourself!
+            </p>
+            <p class="mb-0">
+            </p>
+        </div>
+    </footer>
+    <!-- modal -->
+    <div class="modal" tabindex="-1" id="uploadmodal">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">照片上传</h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="photoupload"
+                           type="file"
+                           name="mediafile"
+                           data-preview-file-type="text"
+                           multiple="multiple"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block js_plus %}
+    <script src="{{ url_for('static', path='/js/masonry.pkgd.min.js')}}"></script>
+    <script src="{{ url_for('static', path='/js/imagesloaded.pkgd.min.js')}}"></script>
+    <script src="{{ url_for('static', path='/fileinput/js/plugins/piexif.min.js')}}"></script>
+    <script src="{{ url_for('static', path='/fileinput/js/plugins/sortable.min.js')}}"></script>
+    <script src="{{ url_for('static', path='/fileinput/js/fileinput.min.js')}}"></script>
+    <script src="{{ url_for('static', path='/fileinput/js/locales/zh.js')}}"></script>
+    <script src="{{ url_for('static', path='/js/photo.js')}}"></script>
+    <script type='text/javascript'>
+        $(document).ready(function () {
+            // with plugin options
+            $("#photoupload").fileinput({
+                language: "zh",
+                previewFileType: "any",
+                uploadUrl: "{{ url_for('media_add')}}",
+                uploadAsync: true,
+                allowedFileTypes:['image', 'video'],
+                maxFileCount: 20,
+                allowedPreviewTypes: ['image'],
+                uploadExtraData: function(){
+                    return {"user_id":1}
+                }
+            });
+        });
+    </script>
+{% endblock js_plus %}

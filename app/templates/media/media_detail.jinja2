@@ -1,0 +1,102 @@
+{% extends "media/media_base.jinja2" %}
+{% block css_plus %}
+    <link rel="stylesheet"
+          href="{{ url_for('static', path='css/media-detail.css')}}"/>
+{% endblock css_plus %}
+{% block upload_btn %}
+{% endblock upload_btn %}
+{% block content_main %}
+    <main class="bg-light container-sm">
+        <form action="{{ url_for('media_detail', media_id=media.id) }}"
+              method="patch">
+            <hr />
+            <div class="row">
+                <div class="col text-center">
+                    <div class="mb-3">
+                        <label for="mediaTitle" class="form-label">
+                            {% if media.is_pic %}
+                                图片标题
+                            {% else %}
+                                视频标题
+                            {% endif %}
+                        </label>
+                        <input type="text"
+                               class="form-control"
+                               id="mediaTitle"
+                               value="{{ media.title }}"/>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-4">
+                    {% if media.is_pic %}
+                        <img src="/upload/{{ media.upload_render_file_path }}"
+                             class="rounded"
+                             alt="..."
+                             height=""
+                             width="300px"/>
+                    {% else %}
+                        <video src="/upload/{{ media.upload_render_file_path }}"
+                               height=""
+                               width="300px"
+                               controls="controls"
+                               class="rounded"/>
+                    {% endif %}
+                </div>
+                <div class="col-8">
+                    <div class="mb-3">
+                        <label for="mediaDescription" class="form-label">
+                            {% if media.is_pic %}
+                                照片故事
+                            {% else %}
+                                视频故事
+                            {% endif %}
+                        </label>
+                        <textarea type="textarea" class="form-control" id="mediaDescription" rows="10">{{media.description}}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="mediaTime" class="form-label">拍摄时间</label>
+                        <input type="date"
+                               class="form-control"
+                               id="mediaTime"
+                               value="{{ media.pic_time.strftime('%Y-%m-%d') }}"/>
+                    </div>
+                    <button class="btn btn-primary " id="ok">确认修改</button>
+                </div>
+            </div>
+        </form>
+    </main>
+{% endblock content_main %}
+{% block js_plus %}
+    <script type='text/javascript'>
+    $(document).ready(function(){
+        $('#ok').click(function(e){
+            var mediaTitle = $('#mediaTitle').val();
+                mediaDescription = $('#mediaDescription').val();
+                mediaTime = $('#mediaTime').val();
+                payload = {
+                    "mediaTitle": mediaTitle,
+                    "mediaDescription": mediaDescription,
+                    "mediaTime": mediaTime,
+                };
+                console.log(payload);
+            $.ajax({
+                headers : {
+                    'Accept' : 'application/json',
+                    'Content-Type' : 'application/json'
+                },
+                url: "{{ url_for('media_edit', media_id=media.id) }}",
+                type: 'PATCH',
+                data: JSON.stringify(payload),
+                success: function(result){
+                    console.log(result)
+                    console.log("已经patch成功了")
+                    window.location.reload()
+                },
+            })
+            return false
+        })
+    })
+    </script>
+{% endblock js_plus %}

@@ -4,7 +4,7 @@
 import datetime
 
 
-from sqlalchemy import Boolean, Column, Integer, String, DateTime, Text
+from sqlalchemy import Boolean, Column, Integer, String, DateTime, Text, Date
 from pydantic_sqlalchemy import sqlalchemy_to_pydantic
 
 from . import Base
@@ -16,9 +16,10 @@ class Medias(Base):
 
     __tablename__ = "medias"
 
-    pic_time = Column(DateTime, default=datetime.datetime.now)
     title = Column(String, default=column_default_text)
     description = Column(Text, default=column_default_text)
+    pic_time = Column(Date, default=datetime.date.today)
+
     upload_local_file_path = Column(String)
     upload_oss_file_path = Column(String)
     upload_cdn_file_path = Column(String)

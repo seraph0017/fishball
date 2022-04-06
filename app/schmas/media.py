@@ -9,16 +9,9 @@ from . import ItemBase
 
 
 
-class PhotoCreateSchema(ItemBase):
 
-    pic_time: datetime.datetime
-    title : str
-    description: Optional[str] = None
-    upload_user_id: int
-    upload_file: str
+class MediaEditSchema(ItemBase):
 
-
-
-class PhotoUploadSchema(ItemBase):
-
-    user_id: int
+    mediaTitle: str
+    mediaDescription: str
+    mediaTime: datetime.date

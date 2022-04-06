@@ -5,9 +5,19 @@
 from app.misc.public import templates
 from fastapi import APIRouter, Request, UploadFile, Form
 from fastapi_sqlalchemy import db
+from app.schmas.media import MediaEditSchema
 
 
-from app.service.media import upload_media, get_medias
+from app.service.media import (
+    convert_page_to_skip_limit,
+    count_age,
+    get_total_page_num,
+    upload_media,
+    get_medias,
+    get_media_by_id,
+    edit_media,
+    parse_media_recent,
+)
 
 
 from devtools import debug
@@ -17,15 +27,22 @@ from app.logger import logger as l
 media_router = APIRouter(prefix="/medias", tags=["medias"])
 
 
-
 @media_router.get("/", name="media_index")
-def media_index_handle(request: Request):
-    medias = get_medias()
+def media_index_handle(request: Request, page_num: int = 1):
+    skip, limit = convert_page_to_skip_limit(page_num)
+    mediaobjs = parse_media_recent(get_medias(skip, limit))
+    total_page_num = get_total_page_num()
+    f_age, c_age = count_age()
     re_context = dict(
         request=request,
         title="鱼丸札记",
         project_name="鱼丸札记",
-        medias = medias
+        mediaobjs=mediaobjs,
+        f_age=f_age,
+        c_age=c_age,
+        now_page_num=page_num,
+        total_page_num=total_page_num,
+
     )
     return templates.TemplateResponse("media/media_base.jinja2", re_context)
 
@@ -40,4 +57,22 @@ async def media_add_handle(
 
 @media_router.get("/{media_id}", name="media_detail")
 def media_detail_handle(request: Request, media_id: int):
-    return templates.TemplateResponse("")
+    debug(media_id)
+    media = get_media_by_id(media_id)
+    debug(media)
+    re_context = dict(
+        request=request,
+        title="鱼丸札记",
+        project_name="鱼丸札记",
+        media=media,
+    )
+    return templates.TemplateResponse("media/media_detail.jinja2", re_context)
+
+
+@media_router.patch("/{media_id}", name="media_edit")
+def media_edit_handle(request: Request, media_id: int, mediaEdit: MediaEditSchema):
+    debug(111)
+    debug(mediaEdit)
+    a = edit_media(media_id, mediaEdit)
+    debug(a)
+    return "ok"

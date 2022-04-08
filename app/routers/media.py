@@ -29,6 +29,8 @@ media_router = APIRouter(prefix="/medias", tags=["medias"])
 
 @media_router.get("/", name="media_index")
 def media_index_handle(request: Request, page_num: int = 1):
+    debug(request.cookies)
+    debug(request.state.user)
     skip, limit = convert_page_to_skip_limit(page_num)
     mediaobjs = parse_media_recent(get_medias(skip, limit))
     total_page_num = get_total_page_num()
@@ -57,7 +59,6 @@ async def media_add_handle(
 
 @media_router.get("/{media_id}", name="media_detail")
 def media_detail_handle(request: Request, media_id: int):
-    debug(media_id)
     media = get_media_by_id(media_id)
     debug(media)
     re_context = dict(

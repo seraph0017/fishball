@@ -12,7 +12,7 @@ from devtools import debug
 from fastapi_sqlalchemy import db
 
 
-class PhotoService(object):
+class MediaService(object):
     pass
 
 

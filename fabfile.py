@@ -7,6 +7,7 @@ from fabric import Connection, task
 
 from app.sqls import engine, Base
 from app.sqls.media import Medias
+from app.sqls.user import Users
 
 c = Connection(configs.DEPLOY_ENV_URI)
 

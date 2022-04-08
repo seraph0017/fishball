@@ -5,7 +5,6 @@ import datetime
 
 
 from sqlalchemy import Boolean, Column, Integer, String, DateTime, Text, Date
-from pydantic_sqlalchemy import sqlalchemy_to_pydantic
 
 from . import Base
 

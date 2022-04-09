@@ -27,3 +27,11 @@ def user_load_query_by_email(user_email: str):
     with db():
         user = db.session.query(Users).filter(Users.email == user_email, Users.is_active == True).first()
     return user
+
+
+def create_user(user):
+    u = Users(**user)
+    db.session.add(u)
+    db.session.commit()
+    db.session.refresh()
+    return u

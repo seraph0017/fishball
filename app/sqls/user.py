@@ -4,8 +4,11 @@
 
 from enum import Enum
 from email.policy import default
+from fastapi import Request
 from sqlalchemy import Column, String, Boolean, Integer
+from sqladmin import ModelAdmin
 from . import Base
+from devtools import debug
 
 
 class UserType(Enum):
@@ -28,3 +31,5 @@ class Users(Base):
     user_type = Column(Integer, default=UserType.FRIEND)
     nick_name = Column(String(length=1024))
     photo_url = Column(String(length=1024))
+
+

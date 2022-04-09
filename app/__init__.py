@@ -11,6 +11,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi_login.exceptions import InvalidCredentialsException
 from fastapi.responses import JSONResponse
+from fastapi_admin.app import app as admin_app
 
 
 from fastapi_login import LoginManager
@@ -19,8 +20,7 @@ from starlette.responses import RedirectResponse
 from app.routers import media
 from app.routers import user
 
-from app.service.user import query_user_by_id, query_user_by_email, user_load_query_by_email
-from app.misc.login_required import login_required
+from app.service.user import query_user_by_email, user_load_query_by_email
 
 
 lm = LoginManager(
@@ -36,6 +36,8 @@ app.include_router(user.user_router)
 
 app.mount("/statics", StaticFiles(directory=configs.STATIC_FILES_PATH), name="static")
 app.mount("/upload", StaticFiles(directory=configs.UPLOADS_FILES_PATH), name="upload")
+app.mount("admin", admin_app)
+
 
 
 

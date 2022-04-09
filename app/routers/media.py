@@ -7,7 +7,6 @@ from app.misc.public import templates
 from fastapi import APIRouter, Request, UploadFile, Form
 from fastapi_sqlalchemy import db
 from app.schmas.media import MediaEditSchema
-from app.misc.login_required import login_required
 from starlette.responses import RedirectResponse
 
 
@@ -59,27 +58,34 @@ def media_index_handle(request: Request, page_num: int = 1):
 async def media_add_handle(
     request: Request, mediafile: UploadFile, user_id: int = Form(...)
 ):
-    contents = await mediafile.read()
-    return upload_media(user_id, mediafile.filename, contents)
+    if request.state.user:
+        contents = await mediafile.read()
+        return upload_media(user_id, mediafile.filename, contents)
+    return RedirectResponse(url=configs.LOGIN_PAGE)
 
 
 @media_router.get("/{media_id}", name="media_detail")
 def media_detail_handle(request: Request, media_id: int):
-    media = get_media_by_id(media_id)
-    debug(media)
-    re_context = dict(
-        request=request,
-        title="鱼丸札记",
-        project_name="鱼丸札记",
-        media=media,
-    )
-    return templates.TemplateResponse("media/media_detail.jinja2", re_context)
+    if request.state.user:
+        media = get_media_by_id(media_id)
+        debug(media)
+        re_context = dict(
+            request=request,
+            title="鱼丸札记",
+            project_name="鱼丸札记",
+            media=media,
+        )
+        return templates.TemplateResponse("media/media_detail.jinja2", re_context)
+    return RedirectResponse(url=configs.LOGIN_PAGE)
 
 
 @media_router.patch("/{media_id}", name="media_edit")
 def media_edit_handle(request: Request, media_id: int, mediaEdit: MediaEditSchema):
-    debug(111)
-    debug(mediaEdit)
-    a = edit_media(media_id, mediaEdit)
-    debug(a)
-    return "ok"
+    if request.state.user:
+        debug(111)
+        debug(mediaEdit)
+        a = edit_media(media_id, mediaEdit)
+        debug(a)
+        return "ok"
+    return RedirectResponse(url=configs.LOGIN_PAGE)
+    

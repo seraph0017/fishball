@@ -21,6 +21,7 @@ ONE_PAGE_LIMIT = 12
 
 
 SECRET = ""
+LOGIN_PAGE = ""
 
 
 try:

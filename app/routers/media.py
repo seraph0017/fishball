@@ -2,10 +2,13 @@
 # encoding:utf-8
 
 
+import configs
 from app.misc.public import templates
 from fastapi import APIRouter, Request, UploadFile, Form
 from fastapi_sqlalchemy import db
 from app.schmas.media import MediaEditSchema
+from app.misc.login_required import login_required
+from starlette.responses import RedirectResponse
 
 
 from app.service.media import (
@@ -31,22 +34,25 @@ media_router = APIRouter(prefix="/medias", tags=["medias"])
 def media_index_handle(request: Request, page_num: int = 1):
     debug(request.cookies)
     debug(request.state.user)
-    skip, limit = convert_page_to_skip_limit(page_num)
-    mediaobjs = parse_media_recent(get_medias(skip, limit))
-    total_page_num = get_total_page_num()
-    f_age, c_age = count_age()
-    re_context = dict(
-        request=request,
-        title="鱼丸札记",
-        project_name="鱼丸札记",
-        mediaobjs=mediaobjs,
-        f_age=f_age,
-        c_age=c_age,
-        now_page_num=page_num,
-        total_page_num=total_page_num,
+    if request.state.user:
+        skip, limit = convert_page_to_skip_limit(page_num)
+        mediaobjs = parse_media_recent(get_medias(skip, limit))
+        total_page_num = get_total_page_num()
+        f_age, c_age = count_age()
+        re_context = dict(
+            request=request,
+            title="鱼丸札记",
+            project_name="鱼丸札记",
+            mediaobjs=mediaobjs,
+            f_age=f_age,
+            c_age=c_age,
+            now_page_num=page_num,
+            total_page_num=total_page_num,
+            current_user = request.state.user,
 
-    )
-    return templates.TemplateResponse("media/media_base.jinja2", re_context)
+        )
+        return templates.TemplateResponse("media/media_base.jinja2", re_context)
+    return RedirectResponse(url=configs.LOGIN_PAGE)
 
 
 @media_router.post("/", name="media_add")

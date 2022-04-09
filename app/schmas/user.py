@@ -40,3 +40,6 @@ class UserUpdate(BaseModel):
 
 
 
+class UserLogin(BaseModel):
+    username: str
+    password: str

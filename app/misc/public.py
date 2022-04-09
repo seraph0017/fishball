@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # encoding:utf-8
 import configs
+from typing import Optional
 from starlette.templating import Jinja2Templates
+
 
 templates = Jinja2Templates(directory=configs.TEMPLATE_FILES_PATH)
 
@@ -57,3 +59,5 @@ def to_chinese(num):
                 if idx < c - 1 and lst[idx + 1] == 0:
                     result += "零"
         return result[::-1]
+
+

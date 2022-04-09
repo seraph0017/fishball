@@ -2,8 +2,18 @@
 # encoding:utf-8
 
 
+from enum import Enum
+from email.policy import default
 from sqlalchemy import Column, String, Boolean, Integer
 from . import Base
+
+
+class UserType(Enum):
+
+    ADMIN = 0
+    FAMILY = 1
+    FRIEND = 2
+    OTHER = 3
 
 
 class Users(Base):
@@ -15,7 +25,6 @@ class Users(Base):
     hashed_password = Column(String(length=1024), nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
     is_superuser = Column(Boolean, default=False, nullable=False)
-    is_verified = Column(Boolean, default=False, nullable=False)
-    user_name = Column(String(length=1024))
+    user_type = Column(Integer, default=UserType.FRIEND)
     nick_name = Column(String(length=1024))
     photo_url = Column(String(length=1024))

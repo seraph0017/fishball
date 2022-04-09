@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # encoding:utf-8
+from app.schmas.user import UserLogin
 import configs
 from devtools import debug
 from hashlib import md5
+from app.misc.public import templates
 
 from fastapi import FastAPI, Request, Depends, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi_sqlalchemy import DBSessionMiddleware
-from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_login.exceptions import InvalidCredentialsException
 from fastapi.responses import JSONResponse
 
@@ -19,6 +20,7 @@ from app.routers import media
 from app.routers import user
 
 from app.service.user import query_user_by_id, query_user_by_email, user_load_query_by_email
+from app.misc.login_required import login_required
 
 
 lm = LoginManager(
@@ -37,18 +39,26 @@ app.mount("/upload", StaticFiles(directory=configs.UPLOADS_FILES_PATH), name="up
 
 
 
+
+
 @lm.user_loader()
 def query_user(user_email: str):
     return user_load_query_by_email(user_email)
-
 
 @app.get("/", name="index")
 def index_handle(request: Request):
     return RedirectResponse(url=app.url_path_for("media_index"))
 
 
-@app.post("/login")
-def login(data: OAuth2PasswordRequestForm = Depends()):
+@app.get("/login")
+def login_handle(request: Request):
+    re_context = dict(
+        request=request,
+    )
+    return templates.TemplateResponse("user/login.jinja2", re_context)
+
+@app.post("/login", name='login')
+def login(data: UserLogin):
     password = data.password
     email = data.username
     content = dict(status='ok')
@@ -64,10 +74,9 @@ def login(data: OAuth2PasswordRequestForm = Depends()):
     return response
 
 
-@app.post("/logout")
+@app.get("/logout", name='logout')
 def logout():
-    content = dict(status='ok')
-    response = JSONResponse(content=content)
+    response = RedirectResponse(url=app.url_path_for('login'))
     response.delete_cookie("fishball-cookie-name")
     return response
 

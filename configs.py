@@ -6,7 +6,7 @@ from os import path
 
 STATIC_FILES_PATH = path.join(path.abspath("."), "app", "statics")
 TEMPLATE_FILES_PATH = path.join(path.abspath("."), "app", "templates")
-UPLOADS_FILES_PATH = ""
+UPLOADS_FILES_PATH = path.join(path.abspath('.'),"uploads") 
 DATABASE_URI = ""
 REDIS_URI = ""
 DEPLOY_ENV_URI = "root@xujiaze.com"

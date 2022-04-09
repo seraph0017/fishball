@@ -23,6 +23,8 @@ ONE_PAGE_LIMIT = 12
 SECRET = ""
 LOGIN_PAGE = ""
 
+ORIGINS = [
+]
 
 try:
     from local_configs import *

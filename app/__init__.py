@@ -11,6 +11,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi_login.exceptions import InvalidCredentialsException
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 
 from fastapi_login import LoginManager
@@ -29,6 +30,13 @@ lm = LoginManager(
 app = FastAPI()
 
 app.add_middleware(DBSessionMiddleware, db_url=configs.DATABASE_URI)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=configs.ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(media.media_router)
 app.include_router(user.user_router)

@@ -4,6 +4,7 @@
 import configs
 
 from fabric import Connection, task
+from fabric.api import local, settings, abort, run, cd
 
 from app.sqls import engine, Base
 from app.sqls.media import Medias

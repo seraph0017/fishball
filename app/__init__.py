@@ -11,7 +11,6 @@ from fastapi.staticfiles import StaticFiles
 from fastapi_sqlalchemy import DBSessionMiddleware
 from fastapi_login.exceptions import InvalidCredentialsException
 from fastapi.responses import JSONResponse
-from fastapi_admin.app import app as admin_app
 
 
 from fastapi_login import LoginManager
@@ -36,7 +35,6 @@ app.include_router(user.user_router)
 
 app.mount("/statics", StaticFiles(directory=configs.STATIC_FILES_PATH), name="static")
 app.mount("/upload", StaticFiles(directory=configs.UPLOADS_FILES_PATH), name="upload")
-app.mount("admin", admin_app)
 
 
 

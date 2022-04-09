@@ -24,3 +24,7 @@ def initdevdb(c):
 
 
 
+
+@task
+def deploy(c):
+    pass 

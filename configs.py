@@ -9,7 +9,7 @@ TEMPLATE_FILES_PATH = path.join(path.abspath("."), "app", "templates")
 UPLOADS_FILES_PATH = ""
 DATABASE_URI = ""
 REDIS_URI = ""
-DEPLOY_ENV_URI = ""
+DEPLOY_ENV_URI = "root@xujiaze.com"
 
 LOGFILE_PATH = path.join(path.abspath("."), "log")
 

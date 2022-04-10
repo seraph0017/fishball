@@ -70,9 +70,11 @@ def login(data: UserLogin):
     password = data.password
     email = data.username
     content = dict(status='ok')
-
+    debug(email)
+    debug(password)
     user = query_user_by_email(email)
     if not user:
+        debug("no user")
         raise InvalidCredentialsException
     elif md5(str.encode(password)).hexdigest() != user.hashed_password:
         raise InvalidCredentialsException

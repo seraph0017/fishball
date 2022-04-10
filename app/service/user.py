@@ -4,6 +4,7 @@
 
 from app.sqls.user import Users
 
+
 from fastapi_sqlalchemy import db
 
 from devtools import debug
@@ -17,11 +18,10 @@ def query_user_by_id(user_id: int):
 
 
 def query_user_by_email(user_email: str):
-    return (
-        db.session.query(Users)
-        .filter(Users.email == user_email, Users.is_active == True)
-        .first()
-    )
+    debug(user_email)
+    user = db.session.query(Users).filter(Users.email == user_email, Users.is_active == True).first()
+    debug(user)
+    return user
 
 def user_load_query_by_email(user_email: str):
     with db():

@@ -227,7 +227,7 @@
                 uploadUrl: "{{ url_for('media_add')}}",
                 uploadAsync: true,
                 allowedFileTypes:['image', 'video'],
-                maxFileCount: 20,
+                maxFileCount: 50,
                 allowedPreviewTypes: ['image'],
                 uploadExtraData: function(){
                     return {"user_id":"{{ current_user.id }}" }

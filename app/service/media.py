@@ -24,7 +24,7 @@ def upload_media(user_id, filename, contents):
         f.write(contents)
     if filename != "":
         ext_file_name = filename.split(".")[-1:].pop()
-    if ext_file_name not in ["jpeg", "png", "jpg"]:
+    if ext_file_name not in ["jpeg", "png", "jpg","JPG"]:
         is_pic = False
     media = Medias(
         upload_local_file_path=upload_filepath,

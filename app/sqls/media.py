@@ -2,9 +2,12 @@
 # encoding:utf-8
 
 import datetime
+from email.policy import default
 
 
 from sqlalchemy import Boolean, Column, Integer, String, DateTime, Text, Date
+
+from app.sqls.user import UserType
 
 from . import Base
 
@@ -29,13 +32,26 @@ class Medias(Base):
     is_pic = Column(Boolean)
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    update_time = Column(DateTime, onupdate=datetime.datetime.now, default=datetime.datetime.now)
+    update_time = Column(
+        DateTime, onupdate=datetime.datetime.now, default=datetime.datetime.now
+    )
     create_time = Column(DateTime, default=datetime.datetime.now)
     is_active = Column(Boolean, default=True)
 
+    group_id = Column(Integer, default=1)
 
 
+class MediaGroups(Base):
 
+    __tablename__ = "mediagroups"
 
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    update_time = Column(
+        DateTime, onupdate=datetime.datetime.now, default=datetime.datetime.now
+    )
+    create_time = Column(DateTime, default=datetime.datetime.now)
+    is_active = Column(Boolean, default=True)
 
-
+    group_level = Column(Integer, default=2)
+    description = Column(Text, default=column_default_text)
+    title = Column(String, default=column_default_text)

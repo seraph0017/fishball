@@ -1,14 +1,20 @@
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 /* force scrollbar */
-html { overflow-y: scroll; }
+html {
+  overflow-y: scroll;
+}
 
-body { font-family: sans-serif; }
+body {
+  font-family: sans-serif;
+}
 
 /* ---- grid ---- */
 
 .grid {
-  background: #DDD;
+  background: #ddd;
 }
 
 /* clear fix */
@@ -50,4 +56,12 @@ body { font-family: sans-serif; }
 
 div.page {
   margin-top: 100px;
+}
+
+.M_background {
+  background-color:lightgray; 
+}
+
+.M_list{
+  padding-top: 0px;
 }

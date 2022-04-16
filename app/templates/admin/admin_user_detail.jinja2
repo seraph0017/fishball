@@ -1,0 +1,228 @@
+{% extends "admin/admin_base.jinja2" %}
+{% block admin_content %}
+    <hr />
+    <div class="row">
+        <div class="col">
+            <h1>用户 [{{ user.email }}]</h1>
+        </div>
+    </div>
+    <hr />
+    <form>
+        <div class="row">
+            <div class="col-4">
+                <label class="float-end  col-form-label form-control-lg" for="user_id">Id</label>
+            </div>
+            <div class="col-8">
+                <input type="text"
+                       readonly
+                       class="form-control-plaintext form-control-lg"
+                       id="user_id"
+                       value="{{ user.id }}"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label class=" form-control-lg float-end  col-form-label" for="user_email">用户名/邮箱</label>
+            </div>
+            <div class="col-8">
+                <input type="text"
+                       class="form-control-plaintext form-control-lg"
+                       id="user_email"
+                       value="{{ user.email }}"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label class="float-end  col-form-label form-control-lg" for="user_password">加密密码</label>
+            </div>
+            <div class="col-6">
+                <input type="text"
+                       readonly
+                       class="form-control-plaintext form-control-lg"
+                       id="user_password"
+                       value="{{ user.hashed_password }}"/>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#encode_password">重置密码</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label class="float-end  col-form-label form-control-lg"
+                       for="user_is_active">是否已激活</label>
+            </div>
+            <div class="col-8">
+                <div class="form-check form-switch form-control-lg" id="user_is_active">
+                    {% if user.is_active %}
+                        <input id="is_active" class="form-check-input" type="checkbox" role="switch" checked/>
+                    {% else %}
+                        <input id="is_active" class="form-check-input" type="checkbox" role="switch" />
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label class=" form-control-lg float-end  col-form-label"
+                       for="user_is_superuser">是否是超管</label>
+            </div>
+            <div class="col-8">
+                <div class="form-check form-switch form-control-lg" id="user_is_superuser">
+                    {% if user.is_superuser %}
+                        <input id="is_superuser" class="form-check-input" type="checkbox" role="switch" checked/>
+                    {% else %}
+                        <input id="is_superuser" class="form-check-input" type="checkbox" role="switch" />
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label for="user_type" class="float-end col-form-label form-control-lg">用户类型</label>
+            </div>
+            <div class="col-8">
+                <div class="form-check form-check-inline form-control-lg">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="inlineRadioOptions"
+                           id="user_type_1"
+                           value="1"/>
+                    <label class="form-check-label" for="inlineRadio1">家人</label>
+                </div>
+                <div class="form-check form-check-inline form-control-lg">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="inlineRadioOptions"
+                           id="user_type_2"
+                           value="2"/>
+                    <label class="form-check-label" for="inlineRadio2">朋友</label>
+                </div>
+                <div class="form-check form-check-inline form-control-lg">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="inlineRadioOptions"
+                           id="user_type_3"
+                           value="3"/>
+                    <label class="form-check-label" for="inlineRadio3">其他人</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label for="nick_name" class="float-end col-form-label form-control-lg">用户昵称</label>
+            </div>
+            <div class="col-8">
+                <input type="text"
+                       class="form-control-plaintext form-control-lg"
+                       id="nick_name"
+                       value="{{ user.nick_name }}"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label for="create_time" class="float-end col-form-label form-control-lg">创建时间</label>
+            </div>
+            <div class="col-8">
+                <input type="text"
+                       readonly
+                       class="form-control-plaintext form-control-lg"
+                       id="create_time"
+                       value="{{ user.create_time }}"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label for="update_time" class="float-end col-form-label form-control-lg">更新时间</label>
+            </div>
+            <div class="col-8">
+                <input type="text"
+                       readonly
+                       class="form-control-plaintext form-control-lg"
+                       id="update_time"
+                       value="{{ user.update_time }}"/>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-8">
+                <button type="button" id="ok" class="btn btn-lg btn-primary">更新数据</button>
+            </div>
+        </div>
+    </form>
+    <!-- Modal 重置密码 -->
+    <div class="modal fade"
+         id="encode_password"
+         tabindex="-1"
+         aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{{ url_for('user_add') }}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">请输入密码</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-floating mb-3">
+                            <input type="password"
+                                   class="form-control"
+                                   name="encode_password"
+                                   id="encode_password"
+                                   placeholder="name@example.com"/>
+                            <label for="floatingInput">密码</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                        <button id="password_btn" type="button" class="btn btn-primary">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock admin_content %}
+{% block js_plus %}
+    <script src="{{ url_for('static', path='/js/md5.min.js')}}"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#user_type_{{user.user_type}}").prop("checked", "checked")
+        $("#password_btn").click(function(e){
+            var hashed_password = md5($("#encode_password").val())
+            $("#user_password").val(hashed_password)
+        })
+        $("#ok").click(function(e){
+            var email = $("#user_email").val();
+                hashed_password = $("#user_password").val();
+                nick_name = $("#nick_name").val();
+                user_type = $("input:radio:checked").val();
+                $("#is_active:checked").val()? is_active = true: is_active=false
+                $("#is_superuser:checked").val()? is_superuser = true: is_superuser=false
+                payload = {
+                    "email": email,
+                    "hashed_password": hashed_password,
+                    "nick_name": nick_name,
+                    "user_type": user_type,
+                    "is_active": is_active,
+                    "is_superuser": is_superuser,
+                }
+            $.ajax({
+                headers : {
+                    'Accept' : 'application/json',
+                    'Content-Type' : 'application/json'
+                },
+                url: "{{ url_for('user_update', user_id = user.id)}}",
+                type: "PATCH" ,
+                data: JSON.stringify(payload),
+                success: function(result){
+                    window.location.reload()
+                }
+            })
+            return false
+        })
+    })
+    </script>
+{% endblock js_plus %}

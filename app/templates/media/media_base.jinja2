@@ -29,15 +29,11 @@
                     </a>
                     <div class="flex-shrink-0 dropdown float-end">
                         <a href="#"
-                           class="d-block link-blue text-decoration-none dropdown-toggle"
+                           class="d-block link-light text-decoration-none dropdown-toggle"
                            id="dropdownUser2"
                            data-bs-toggle="dropdown"
                            aria-expanded="false">
-                            <img src="https://github.com/mdo.png"
-                                 alt="mdo"
-                                 width="32"
-                                 height="32"
-                                 class="rounded-circle"/>
+                            <i class="bi bi-person-circle"></i>
                         </a>
                         <ul class="dropdown-menu text-small shadow"
                             aria-labelledby="dropdownUser2">
@@ -53,31 +49,36 @@
         </header>
     {% endblock content_header %}
     {% block content_main %}
-        <main>
-            <section class="py-5 text-center container">
-                <div class="row py-lg-5">
-                    <div class="col-lg-6 col-md-8 mx-auto">
-                        <h1 class="fw-light">鱼丸の日常</h1>
-                        <hr />
-                        <p class="lead text-muted">
-                            吾年{{ f_age }}，汝生方{{ c_age }}年。
-                        </p>
-                        <p class="lead text-muted">
-                            虽知得子晚，亦拟寿家传。
-                        </p>
-                        <p class="lead text-muted">
-                            立己要庄重，存心无躁偏。
-                        </p>
-                        <p class="lead text-muted">
-                            人皆可向上，从否勿归天。
-                        </p>
-                    </div>
+        <main class="M_background">
+            <section class="container">
+                <div class="text-center">
+                    <img height=""
+                         width=""
+                         src="{{ url_for('static', path='/image/banner.jpg') }}"
+                         class="img-fluid"
+                         alt="..."/>
                 </div>
             </section>
-            <div class="album py-5 bg-light">
+            <div class="album py-5 bg-light M_list">
                 <div class="container">
                     <div class="row">
                         <div class="col">
+                            <div class="btn-group">
+                                <button type="button"
+                                        class="btn btn-primary dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                    {{ current_mediagroup.title }}
+                                </button>
+                                <ul class="dropdown-menu">
+                                    {% for media_group in media_groups %}
+                                        <li>
+                                            <a class="dropdown-item"
+                                               href="{{ url_for('media_group_index', media_group_id=media_group.id) }}">{{ media_group.title }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                             {% if current_user.user_type in [0,1] %}
                                 <button class="btn btn-primary float-end"
                                         type="button"
@@ -107,10 +108,13 @@
                                     {% if media.is_pic %}
                                         <img src="/upload/{{ media.upload_render_file_path }}"
                                              alt="..."
+                                             class="img-thumbnail"
                                              height=""
                                              width=""/>
                                     {% else %}
-                                        <video src="/upload/{{ media.upload_render_file_path }}" controls="controls">
+                                        <video class="img-thumbnail"
+                                               src="/upload/{{ media.upload_render_file_path }}"
+                                               controls="controls">
                                         </video>
                                     {% endif %}
                                     <div class="card-body">
@@ -150,17 +154,17 @@
                         <ul class="pagination justify-content-center">
                             <li class="page-item" id="pre">
                                 <a class="page-link"
-                                   href="{{ url_for('media_index') }}?page_num={{ 1 if now_page_num-1 else now_page_num }}">前一页</a>
+                                   href="{{ url_for('media_group_index', media_group_id=current_mediagroup.id) }}?page_num={{ 1 if now_page_num-1 else now_page_num }}">前一页</a>
                             </li>
                             {% for page_num in range(1,total_page_num+1)%}
                                 <li class="page-item" id="page{{ page_num }}">
                                     <a class="page-link"
-                                       href="{{ url_for('media_index') }}?page_num={{ page_num }}">{{ page_num }}</a>
+                                       href="{{ url_for('media_group_index', media_group_id=current_mediagroup.id) }}?page_num={{ page_num }}">{{ page_num }}</a>
                                 </li>
                             {% endfor %}
                             <li class="page-item" id="aft">
                                 <a class="page-link"
-                                   href="{{ url_for('media_index') }}?page_num={{ now_page_num+1 }}">后一页</a>
+                                   href="{{ url_for('media_group_index',  media_group_id=current_mediagroup.id) }}?page_num={{ now_page_num+1 }}">后一页</a>
                             </li>
                         </ul>
                     </nav>
@@ -221,6 +225,10 @@
     <script type='text/javascript'>
         $(document).ready(function () {
             // with plugin options
+            //$('.grid').masonry({
+                // options
+            //    itemSelector: '.grid-item',
+            //});
             $("#photoupload").fileinput({
                 language: "zh",
                 previewFileType: "any",
@@ -230,7 +238,7 @@
                 maxFileCount: 50,
                 allowedPreviewTypes: ['image'],
                 uploadExtraData: function(){
-                    return {"user_id":"{{ current_user.id }}" }
+                    return {"user_id":"{{ current_user.id }}", "media_group_id":"{{ current_mediagroup.id }}" }
                 }
             });
 

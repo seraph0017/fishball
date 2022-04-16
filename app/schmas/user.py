@@ -23,7 +23,7 @@ class UserCreate(BaseModel):
     user_type: int
     nick_name: str
     hashed_password: str
-    photo_url: str
+    photo_url: Optional[str] = ""
 
 
 class UserUpdate(BaseModel):
@@ -33,7 +33,7 @@ class UserUpdate(BaseModel):
     user_type: int
     nick_name: str
     hashed_password: str
-    photo_url: str
+    photo_url: Optional[str] = ""
 
 
 

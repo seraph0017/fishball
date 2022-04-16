@@ -1,11 +1,11 @@
 #!/usr/biu/env python
 # encoding:utf-8
 
-
+import datetime
 from enum import Enum
 from email.policy import default
 from fastapi import Request
-from sqlalchemy import Column, String, Boolean, Integer
+from sqlalchemy import Column, String, Boolean, Integer, DateTime
 from sqladmin import ModelAdmin
 from . import Base
 from devtools import debug
@@ -31,5 +31,7 @@ class Users(Base):
     user_type = Column(Integer, default=UserType.FRIEND)
     nick_name = Column(String(length=1024))
     photo_url = Column(String(length=1024))
-
-
+    update_time = Column(
+        DateTime, onupdate=datetime.datetime.now, default=datetime.datetime.now
+    )
+    create_time = Column(DateTime, default=datetime.datetime.now)

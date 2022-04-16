@@ -30,18 +30,19 @@
             <hr />
             <div class="row">
                 <div class="col-4">
+                    <label for="img" class="form-label">媒体素材</label>
                     {% if media.is_pic %}
                         <img src="/upload/{{ media.upload_render_file_path }}"
-                             class="rounded"
+                             class="rounded img-thumbnail img-fluid"
                              alt="..."
                              height=""
-                             width="300px"/>
+                             width=""/>
                     {% else %}
                         <video src="/upload/{{ media.upload_render_file_path }}"
                                height=""
-                               width="300px"
+                               width=""
                                controls="controls"
-                               class="rounded"/>
+                               class="rounded img-thumbnail img-fluid"/>
                     {% endif %}
                 </div>
                 <div class="col-8">

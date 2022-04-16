@@ -121,6 +121,16 @@ def create_media_group(mediagroup):
     db.session.refresh(mg)
     return mg
 
+def update_media_group_by_id(media_group_id, media_group_update):
+    mg = db.session.query(MediaGroups).filter(MediaGroups.id == media_group_id).first()
+    mg.title = media_group_update.title
+    mg.description = media_group_update.description
+    mg.is_active = media_group_update.is_active
+    mg.group_level = media_group_update.group_level
+    db.session.add(mg)
+    db.session.commit()
+    db.session.refresh(mg)
+    return mg
 
 def get_media_groups_by_user_type(user_type):
     return (
@@ -148,5 +158,3 @@ def get_media_group_count():
 def get_all_media_group():
     return db.session.query(MediaGroups).all()
 
-def get_media_group_by_id(media_group_id: int):
-    return db.session.query(MediaGroups).filter(MediaGroups.id == media_group_id).all()

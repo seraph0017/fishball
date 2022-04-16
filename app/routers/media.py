@@ -6,7 +6,11 @@ import configs
 from app.misc.public import templates
 from fastapi import APIRouter, Request, UploadFile, Form
 from fastapi_sqlalchemy import db
-from app.schmas.media import MediaEditSchema, MediaGroupCreateSchema
+from app.schmas.media import (
+    MediaEditSchema,
+    MediaGroupCreateSchema,
+    MediaGroupUpdateSchema,
+)
 from starlette.responses import RedirectResponse
 
 
@@ -16,6 +20,7 @@ from app.service.media import (
     create_media_group,
     get_media_groups_by_user_type,
     get_total_page_num,
+    update_media_group_by_id,
     upload_media,
     get_medias,
     get_media_by_id,
@@ -63,10 +68,23 @@ def media_group_index_handle(
         return templates.TemplateResponse("media/media_base.jinja2", re_context)
     return RedirectResponse(url=configs.LOGIN_PAGE)
 
+
 @media_group_router.post("/", name="media_group_add")
-def media_group_add_handle(request: Request, media_group_create: MediaGroupCreateSchema):
+def media_group_add_handle(
+    request: Request, media_group_create: MediaGroupCreateSchema
+):
     if request.state.user:
         create_media_group(media_group_create)
+        return "ok"
+    return RedirectResponse(url=configs.LOGIN_PAGE)
+
+
+@media_group_router.patch("/{media_group_id}", name="media_group_update")
+def media_group_add_handle(
+    request: Request, media_group_id: int, media_group_update: MediaGroupUpdateSchema
+):
+    if request.state.user:
+        update_media_group_by_id(media_group_id, media_group_update)
         return "ok"
     return RedirectResponse(url=configs.LOGIN_PAGE)
 

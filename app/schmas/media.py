@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#encoding:utf-8
+# encoding:utf-8
 
 import datetime
 
@@ -7,8 +7,6 @@ from typing import Optional
 
 
 from . import ItemBase
-
-
 
 
 class MediaEditSchema(ItemBase):
@@ -22,4 +20,12 @@ class MediaGroupCreateSchema(ItemBase):
 
     title: str
     description: Optional[str] = None
-    group_level: Optional[int] = 2
+    group_level: Optional[int]
+
+
+class MediaGroupUpdateSchema(ItemBase):
+
+    title: str
+    description: Optional[str] = None
+    group_level: Optional[int]
+    is_active: Optional[bool] = True

@@ -4,13 +4,16 @@
 from app.service.media import (
     get_all_media_group,
     get_media_count,
+    get_media_group_by_id,
     get_media_group_count,
 )
 from app.service.user import get_all_user, get_user_by_id, get_user_count
+from app.sqls import media
 import configs
 from fastapi import APIRouter, Request
 from app.misc.public import templates
 from starlette.responses import RedirectResponse
+from devtools import debug
 
 
 admin_router = APIRouter(prefix="/admin", tags=["admin"])
@@ -83,5 +86,14 @@ def admin_media_group_handle(request: Request):
 
 
 @admin_router.get("/mediagroup/{media_group_id}", name="admin_media_group_detail")
-def admin_media_detail_handle(media_group_id):
-    pass
+def admin_media_detail_handle(request: Request, media_group_id: int):
+    if request.state.user and request.state.user.is_superuser:
+        media_group = get_media_group_by_id(media_group_id)
+        debug(media_group)
+        re_context = dict(
+            request=request,
+            title="鱼丸札记",
+            media_group=media_group,
+        )
+        return templates.TemplateResponse("admin/admin_mediagroup_detail.jinja2", re_context)
+    return RedirectResponse(url=configs.LOGIN_PAGE)

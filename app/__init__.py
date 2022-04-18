@@ -94,9 +94,12 @@ def logout():
     response.delete_cookie("fishball-cookie-name")
     return response
 
+
 @app.get("/b49429793fd7f3772a0d22f4365b6969.txt")
 def weixin_check():
-    return "528662450b377cd6937b9c7202d9e6e5abd33866"
+    return Response(
+        content="528662450b377cd6937b9c7202d9e6e5abd33866", media_type="text/plain"
+    )
 
 
 lm.useRequest(app)

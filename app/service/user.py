@@ -2,7 +2,9 @@
 # encoding:utf-8
 
 
+from app.schmas.user import ChangePWD
 from app.sqls.user import Users
+from hashlib import md5
 
 
 from fastapi_sqlalchemy import db
@@ -70,3 +72,15 @@ def get_user_by_id(user_id: int):
 
 def get_user_count():
     return db.session.query(Users).count()
+
+
+def change_password_by_id(user_id: int, changePWD: ChangePWD):
+    u = db.session.query(Users).filter(Users.id == user_id).first()
+    if u.hashed_password == md5(str.encode(changePWD.old_pwd)).hexdigest():
+        u.hashed_password = md5(str.encode(changePWD.new_pwd)).hexdigest()
+        db.session.add(u)
+        db.session.commit()
+        db.session.refresh(u)
+        return u
+    else:
+        return False

@@ -40,3 +40,8 @@ class UserUpdate(BaseModel):
 class UserLogin(BaseModel):
     username: str
     password: str
+
+
+class ChangePWD(BaseModel):
+    old_pwd: str
+    new_pwd: str

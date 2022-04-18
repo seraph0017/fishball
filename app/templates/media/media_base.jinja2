@@ -38,6 +38,12 @@
                         <ul class="dropdown-menu text-small shadow"
                             aria-labelledby="dropdownUser2">
                             <li>
+                                <a class="dropdown-item"
+                                   href="{{ url_for('logout') }}"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#changepwdmodal">修改密码</a>
+                            </li>
+                            <li>
                                 <a class="dropdown-item" href="{{ url_for('logout') }}">退出登录</a>
                             </li>
                         </ul>
@@ -215,6 +221,47 @@
                 </div>
             </div>
         </div>
+        <div class="modal" tabindex="-1" id="changepwdmodal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">修改密码</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="float-end  col-form-label" for="old_password">老密码</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="password"
+                                       class="form-control-plaintext"
+                                       id="old_password"
+                                       value=""/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="float-end  col-form-label" for="new_password">新密码</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="password"
+                                       class="form-control-plaintext"
+                                       id="new_password"
+                                       value=""/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                        <button type="button" id="change_pwd_ok" class="btn btn-primary">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endblock modal %}
 {% endblock content %}
 {% block js_plus %}
@@ -227,11 +274,6 @@
     <script src="{{ url_for('static', path='/js/photo.js')}}"></script>
     <script type='text/javascript'>
         $(document).ready(function () {
-            // with plugin options
-            //$('.grid').masonry({
-                // options
-            //    itemSelector: '.grid-item',
-            //});
             $("#photoupload").fileinput({
                 language: "zh",
                 previewFileType: "any",
@@ -252,6 +294,28 @@
             if ({{now_page_num}}==1){
                 $("#pre").addClass("disabled");
             };
+
+            $("#change_pwd_ok").click(function(e){
+                var old_password = $("#old_password").val();
+                    new_password = $("#new_password").val();
+                    payload = {
+                        "old_pwd": old_password,
+                        "new_pwd": new_password,
+                    }
+                $.ajax({
+                    headers : {
+                        'Accept' : 'application/json',
+                        'Content-Type' : 'application/json'
+                    },
+                    url: "{{ url_for('change_pwd', user_id=current_user.id)}}",
+                    type: "POST" ,
+                    data: JSON.stringify(payload),
+                    success: function(result){
+                        window.location.href = "{{ url_for('logout')}}"
+                    }
+                })
+                return false
+            })
 
         });
     </script>

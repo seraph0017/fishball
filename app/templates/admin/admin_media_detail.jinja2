@@ -1,0 +1,112 @@
+{% extends "admin/admin_base.jinja2" %}
+{% block admin_content %}
+    <hr />
+    <div class="row">
+        <div class="col">
+            <h1>媒体素材 [{{ media.title }}]</h1>
+        </div>
+    </div>
+    <hr />
+    <form>
+        <div class="row">
+            <div class="col-4">
+                <label for="img" class="form-label">媒体素材</label>
+                {% if media.is_pic %}
+                    <img src="/upload/{{ media.upload_render_file_path }}"
+                         class="rounded img-thumbnail img-fluid"
+                         alt="..."
+                         height=""
+                         width=""/>
+                {% else %}
+                    <video src="/upload/{{ media.upload_render_file_path }}"
+                           height=""
+                           width=""
+                           controls="controls"
+                           class="rounded img-thumbnail img-fluid"/>
+                {% endif %}
+            </div>
+            <div class="col-8">
+                <div class="mb-3">
+                    <label for="title" class="form-label">媒体名称</label>
+                    <input type="text"
+                           class="form-control"
+                           id="title"
+                           value="{{ media.title }}"/>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">
+                        {% if media.is_pic %}
+                            照片故事
+                        {% else %}
+                            视频故事
+                        {% endif %}
+                    </label>
+                    <textarea type="textarea" class="form-control" id="description" rows="10">{{media.description}}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="pic_time" class="form-label">拍摄时间</label>
+                    <input type="date"
+                           class="form-control"
+                           id="pic_time"
+                           value="{{ media.pic_time.strftime('%Y-%m-%d') }}"/>
+                </div>
+                <div class="mb-3">
+                    <label class="col-form-label form-control-lg" for="is_active">是否已激活</label>
+                    <div class="form-check form-switch form-control-lg" id="is_active">
+                        {% if media.is_active %}
+                            <input id="is_active"
+                                   class="form-check-input"
+                                   type="checkbox"
+                                   role="switch"
+                                   checked/>
+                        {% else %}
+                            <input id="is_active" class="form-check-input" type="checkbox" role="switch" />
+                        {% endif %}
+                    </div>
+                </div>
+                   <div class="mb-3">
+                    <label for="group_id" class="form-label">所属相册</label>
+                    <input type="text"
+                           class="form-control"
+                           id="group_id"
+                           value="{{ media.group_id }}"/>
+                </div>
+            </div>
+            <hr />
+            <button class="btn btn-primary " id="ok">确认修改</button>
+        </div>
+    </form>
+{% endblock admin_content %}
+{% block js_plus %}
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#ok").click(function(e){
+            var title = $("#title").val();
+                description = $("#description").val();
+                pic_time = $("#pic_time").val();
+                group_id = $("#group_id").val();
+                $("#is_active:checked").val()? is_active = true: is_active=false
+                payload = {
+                    "mediaTitle": title,
+                    "mediaDescription": description,
+                    "mediaTime": pic_time,
+                    "is_active": is_active,
+                    "group_id": group_id,
+                }
+            $.ajax({
+                headers : {
+                    'Accept' : 'application/json',
+                    'Content-Type' : 'application/json'
+                },
+                url: "{{ url_for('media_edit', media_id=media.id)}}",
+                type: "PATCH" ,
+                data: JSON.stringify(payload),
+                success: function(result){
+                    window.location.reload()
+                }
+            })
+            return false
+        })
+    })
+    </script>
+{% endblock js_plus %}

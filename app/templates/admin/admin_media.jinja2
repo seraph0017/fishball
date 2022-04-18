@@ -1,46 +1,72 @@
 {% extends "admin/admin_base.jinja2" %}
 {% block admin_content %}
     <hr />
-    <h1>管理员看板</h1>
+    <div class="row">
+        <div class="col">
+            <h1>媒体看板</h1>
+        </div>
+        <div class="col"></div>
+    </div>
+    <hr />
     <div class="table-responsive">
         <table class="table table-striped table-sm">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">项目</th>
-                    <th scope="col">总数</th>
+                    <th scope="col">id</th>
+                    <th scope="col">媒体名</th>
+                    <th scope="col">媒体描述</th>
+                    <th scope="col">拍摄时间</th>
+                    <th scope="col">素材类型</th>
+                    <th scope="col">创建时间</th>
+                    <th scope="col">更新时间</th>
+                    <th scope="col">所属相册</th>
+                    <th scope="col">是否激活</th>
                     <th scope="col">操作</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>用户</td>
-                    <td>{{ user_count }}</td>
-                    <td>
-                        <a class="btn btn-primary btn-sm"
-                           href="{{ url_for('admin_user_list') }}">详情</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>相册</td>
-                    <td>{{ media_group_count }}</td>
-                    <td>
-                        <a class="btn btn-primary btn-sm"
-                           href="{{ url_for('admin_media_group_list') }}">详情</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>媒体素材</td>
-                    <td>{{ media_count }}</td>
-                    <td>
-                        <a class="btn btn-primary btn-sm"
-                           href="{{ url_for('admin_media_list') }}">详情</a>
-                    </td>
-                </tr>
+                {% for media in media_list %}
+                    <tr>
+                        <td>{{ media.id }}</td>
+                        <td>{{ media.title }}</td>
+                        <td>{{ media.description }}</td>
+                        <td>{{ media.pic_time }}</td>
+                        <td>
+                            {% if media.is_pic %}
+                                <i class="bi bi-image-fill"></i>
+                            {% else %}
+                                <i class="bi bi-file-earmark-play-fill"></i>
+                            {% endif %}
+                        </td>
+                        <td>{{ media.create_time }}</td>
+                        <td>{{ media.update_time }}</td>
+                        <td>{{ media.group_id }}</td>
+                        <td>
+                            {% if media.is_active %}
+                                <i class="bi bi-hand-thumbs-up-fill"></i>
+                            {% else %}
+                                <i class="bi bi-hand-thumbs-down-fill"></i>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a class="btn btn-primary btn-sm"
+                               href="{{ url_for('admin_media_detail', media_id=media.id) }}">详情</a>
+                        </td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
+    </div>
+    <div class="page">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {% for page_num in page_num_list %}
+                    <li class="page-item" id="page{{ page_num }}">
+                        <a class="page-link"
+                           href="{{ url_for('admin_media_list') }}?page_num={{ page_num }}">{{ page_num }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
     </div>
 {% endblock admin_content %}

@@ -1,0 +1,159 @@
+{% extends "admin/admin_base.jinja2" %}
+{% block admin_content %}
+    <hr />
+    <div class="row">
+        <div class="col">
+            <h1>相册 [{{ media_group.title }}]</h1>
+        </div>
+    </div>
+    <hr />
+    <form>
+        <div class="row">
+            <div class="col-4">
+                <label class="float-end  col-form-label form-control-lg"
+                       for="media_group_id">Id</label>
+            </div>
+            <div class="col-8">
+                <input type="text"
+                       readonly
+                       class="form-control-plaintext form-control-lg"
+                       id="media_group_id"
+                       value="{{ media_group.id }}"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label class=" form-control-lg float-end  col-form-label" for="title">相册名</label>
+            </div>
+            <div class="col-8">
+                <input type="text"
+                       class="form-control-plaintext form-control-lg"
+                       id="title"
+                       value="{{ media_group.title }}"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label class="float-end  col-form-label form-control-lg" for="description">相册描述</label>
+            </div>
+            <div class="col-8">
+                <input type="textarea"
+                       class="form-control-plaintext form-control-lg"
+                       id="description"
+                       value="{{ media_group.description }}"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label class="float-end  col-form-label form-control-lg" for="is_active">是否已激活</label>
+            </div>
+            <div class="col-8">
+                <div class="form-check form-switch form-control-lg" id="is_active">
+                    {% if media_group.is_active %}
+                        <input id="is_active"
+                               class="form-check-input"
+                               type="checkbox"
+                               role="switch"
+                               checked/>
+                    {% else %}
+                        <input id="is_active" class="form-check-input" type="checkbox" role="switch" />
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label for="group_level" class="float-end col-form-label form-control-lg">相册能见度</label>
+            </div>
+            <div class="col-8">
+                <div class="form-check form-check-inline form-control-lg">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="inlineRadioOptions"
+                           id="group_level_1"
+                           value="1"/>
+                    <label class="form-check-label" for="group_level_1">家人能看</label>
+                </div>
+                <div class="form-check form-check-inline form-control-lg">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="inlineRadioOptions"
+                           id="group_level_2"
+                           value="2"/>
+                    <label class="form-check-label" for="group_level_2">朋友能看</label>
+                </div>
+                <div class="form-check form-check-inline form-control-lg">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="inlineRadioOptions"
+                           id="group_level_3"
+                           value="3"/>
+                    <label class="form-check-label" for="group_level_3">其他人能看</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label for="create_time" class="float-end col-form-label form-control-lg">创建时间</label>
+            </div>
+            <div class="col-8">
+                <input type="text"
+                       readonly
+                       class="form-control-plaintext form-control-lg"
+                       id="create_time"
+                       value="{{ media_group.create_time }}"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label for="update_time" class="float-end col-form-label form-control-lg">更新时间</label>
+            </div>
+            <div class="col-8">
+                <input type="text"
+                       readonly
+                       class="form-control-plaintext form-control-lg"
+                       id="update_time"
+                       value="{{ media_group.update_time }}"/>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-8">
+                <button type="button" id="ok" class="btn btn-lg btn-primary">更新数据</button>
+            </div>
+        </div>
+    </form>
+{% endblock admin_content %}
+{% block js_plus %}
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#group_level_{{media_group.group_level}}").prop("checked", "checked")
+        $("#ok").click(function(e){
+            var title = $("#title").val();
+                description = $("#description").val();
+                group_level = $("input:radio:checked").val();
+                $("#is_active:checked").val()? is_active = true: is_active=false
+                payload = {
+                    "title": title,
+                    "description": description,
+                    "group_level": group_level,
+                    "is_active": is_active,
+                }
+            $.ajax({
+                headers : {
+                    'Accept' : 'application/json',
+                    'Content-Type' : 'application/json'
+                },
+                url: "{{ url_for('media_group_update', media_group_id=media_group.id)}}",
+                type: "PATCH" ,
+                data: JSON.stringify(payload),
+                success: function(result){
+                    window.location.reload()
+                }
+            })
+            return false
+        })
+    })
+    </script>
+{% endblock js_plus %}

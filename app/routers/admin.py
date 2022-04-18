@@ -2,10 +2,16 @@
 # encoding:utf-8
 
 from app.service.media import (
+    convert_page_to_skip_limit,
     get_all_media_group,
+    get_all_medias,
+    get_all_page_num,
+    get_media_by_id,
     get_media_count,
     get_media_group_by_id,
     get_media_group_count,
+    get_medias,
+    get_page_num_list,
 )
 from app.service.user import get_all_user, get_user_by_id, get_user_count
 from app.sqls import media
@@ -63,13 +69,37 @@ def admin_user_detail_handle(request: Request, user_id: int):
 
 
 @admin_router.get("/media", name="admin_media_list")
-def admin_media_handle():
-    pass
+def admin_media_handle(request: Request, page_num: int = 1):
+    if request.state.user and request.state.user.is_superuser:
+        skip, limit = convert_page_to_skip_limit(page_num)
+        media_list = get_all_medias(skip, limit)
+        all_page_num = get_all_page_num()
+        page_num_list = get_page_num_list(all_page_num, page_num)
+        re_context = dict(
+            request=request,
+            title="鱼丸札记",
+            media_list=media_list,
+            total_page_num=all_page_num,
+            now_page_num=page_num,
+            page_num_list = page_num_list,
+        )
+        return templates.TemplateResponse("admin/admin_media.jinja2", re_context)
+    return RedirectResponse(url=configs.LOGIN_PAGE)
 
 
 @admin_router.get("/media/{media_id}", name="admin_media_detail")
-def admin_media_detail_handle(media_id):
-    pass
+def admin_media_detail_handle(request: Request, media_id: int):
+    if request.state.user and request.state.user.is_superuser:
+        media = get_media_by_id(media_id)
+        re_context = dict(
+            request=request,
+            title="鱼丸札记",
+            media=media,
+        )
+        return templates.TemplateResponse(
+            "admin/admin_media_detail.jinja2", re_context
+        )
+    return RedirectResponse(url=configs.LOGIN_PAGE)
 
 
 @admin_router.get("/mediagroup", name="admin_media_group_list")
@@ -95,5 +125,7 @@ def admin_media_detail_handle(request: Request, media_group_id: int):
             title="鱼丸札记",
             media_group=media_group,
         )
-        return templates.TemplateResponse("admin/admin_mediagroup_detail.jinja2", re_context)
+        return templates.TemplateResponse(
+            "admin/admin_mediagroup_detail.jinja2", re_context
+        )
     return RedirectResponse(url=configs.LOGIN_PAGE)

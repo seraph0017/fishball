@@ -59,6 +59,16 @@ def get_medias(media_group_id: int = 1, skip: int = 0, limit: int = 12):
     )
 
 
+def get_all_medias(skip: int = 0, limit: int = 12):
+    return (
+        db.session.query(Medias)
+        .order_by(Medias.pic_time.desc())
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
+
+
 def get_total_medias(media_group_id):
     return (
         db.session.query(Medias)
@@ -75,16 +85,20 @@ def get_total_page_num(media_group_id):
     return page_num
 
 
+def get_all_page_num():
+    medias = db.session.query(Medias).count()
+    page_num, other = divmod(medias, configs.ONE_PAGE_LIMIT)
+    if other != 0:
+        page_num += 1
+    return page_num
+
+
 def convert_page_to_skip_limit(page):
     return configs.ONE_PAGE_LIMIT * (page - 1), configs.ONE_PAGE_LIMIT * (page)
 
 
 def get_media_by_id(media_id):
-    return (
-        db.session.query(Medias)
-        .filter(Medias.id == media_id, Medias.is_active == True)
-        .first()
-    )
+    return db.session.query(Medias).filter(Medias.id == media_id).first()
 
 
 def edit_media(media_id, mediaEdit):
@@ -121,6 +135,7 @@ def create_media_group(mediagroup):
     db.session.refresh(mg)
     return mg
 
+
 def update_media_group_by_id(media_group_id, media_group_update):
     mg = db.session.query(MediaGroups).filter(MediaGroups.id == media_group_id).first()
     mg.title = media_group_update.title
@@ -131,6 +146,7 @@ def update_media_group_by_id(media_group_id, media_group_update):
     db.session.commit()
     db.session.refresh(mg)
     return mg
+
 
 def get_media_groups_by_user_type(user_type):
     return (
@@ -158,3 +174,22 @@ def get_media_group_count():
 def get_all_media_group():
     return db.session.query(MediaGroups).all()
 
+
+def get_page_num_list(total_page_num, now_page_num):
+    num_list = []
+    if total_page_num >= 10:
+        if now_page_num >= 5:
+            if (total_page_num - now_page_num) >= 5:
+                for i in range(now_page_num - 5, now_page_num + 5):
+                    num_list.append(i)
+            else:
+                for i in range(now_page_num - 5, total_page_num):
+                    num_list.append(i)
+        else:
+            for i in range(1, 11):
+                num_list.append(i)
+    else:
+        for i in range(1, total_page_num + 1):
+            num_list.append(i)
+
+    return num_list

@@ -19,6 +19,7 @@ from app.service.media import (
     count_age,
     create_media_group,
     get_media_groups_by_user_type,
+    get_page_num_list,
     get_total_page_num,
     update_media_group_by_id,
     upload_media,
@@ -51,6 +52,7 @@ def media_group_index_handle(
         f_age, c_age = count_age()
         media_groups = get_media_groups_by_user_type(request.state.user.user_type)
         current_mediagroup = get_media_group_by_id(media_group_id)
+        page_num_list = get_page_num_list(total_page_num, page_num)
         debug(current_mediagroup)
         re_context = dict(
             request=request,
@@ -64,6 +66,7 @@ def media_group_index_handle(
             current_user=request.state.user,
             current_mediagroup=current_mediagroup,
             media_groups=media_groups,
+            page_num_list= page_num_list,
         )
         return templates.TemplateResponse("media/media_base.jinja2", re_context)
     return RedirectResponse(url=configs.LOGIN_PAGE)

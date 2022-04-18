@@ -14,6 +14,8 @@ class MediaEditSchema(ItemBase):
     mediaTitle: str
     mediaDescription: str
     mediaTime: datetime.date
+    is_active: Optional[bool] = True 
+    group_id: Optional[int] = 1
 
 
 class MediaGroupCreateSchema(ItemBase):
